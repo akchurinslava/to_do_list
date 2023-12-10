@@ -3,11 +3,15 @@ html, body {
 }
 
 body {
-  background-color: #E4E5E7;
+  /* background-color: #E4E5E7; */
   padding-top: 30px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  background-image: url('/img/background.jpeg');
+  background-size: cover;
+  background-position: center; 
+  background-repeat: no-repeat; 
 }
 .aside {
   height: 400px;
@@ -83,4 +87,11 @@ body {
 
 .float-right {
   float: right;
+}
+
+.display-4 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
