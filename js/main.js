@@ -1,0 +1,183 @@
+
+//find elements on page
+const form = document.querySelector('#form');
+const input = document.querySelector('#taskInput');
+const taskList = document.querySelector('#tasksList');
+const emptyList = document.querySelector('#emptyList');
+
+let tasks = [];
+
+if (localStorage.getItem('tasks')){
+    tasks = JSON.parse(localStorage.getItem('tasks'));
+    tasks.forEach((task) => renderTask(tasks));
+};
+
+// tasks.forEach(function (task){
+//     renderTask(task);
+// });
+
+
+
+
+checkEmptyList();
+
+//add task
+form.addEventListener('submit', addTask);
+
+//delete task
+taskList.addEventListener('click', deleteTask);
+
+//done task
+taskList.addEventListener('click', doneTask);
+
+function addTask(event){
+    //prevent page reload
+    event.preventDefault();
+
+    //take task text from text field
+    const taskText = taskInput.value;
+        
+    const currentDate = new Date();
+
+    const day = currentDate.getDate();
+    const month = currentDate.getMonth() + 1;
+    const hours = currentDate.getHours();
+    const minutes = currentDate.getMinutes();
+    const year = currentDate.getFullYear();
+ 
+    const id = `${day}.${month}.${year} ${hours}:${minutes}`;
+    //describe task like object
+    const newTask = {
+        id: Date.now(),
+        text: taskText,
+        done: false
+    };
+
+    //add task to array
+    tasks.push(newTask);
+
+    saveToLocalStorage();
+
+    renderTask(newTask);
+
+    //clear text field and save focus
+    taskInput.value = "";
+    taskInput.focus();
+
+    // //if in list more then 1 element, "task list is empty" will be hide
+    // if(taskList.children.length > 1){
+    //     emptyList.classList.add('none');
+    // };
+    checkEmptyList();
+    
+}; 
+
+function deleteTask(event){
+    //if click was not by button "delete"
+    if (event.target.dataset.action !== 'delete') return;
+
+    //check that click on button "delete"
+    const parentNode = event.target.closest('.list-group-item');
+
+    //take task ID
+    const id = Number(parentNode.id);
+
+    
+    // //find index in tasks array
+    // const index = tasks.findIndex(function(task){
+    //     return task.id === id;
+    // });
+    // //Second way
+    // const index = tasks.findIndex((task) => task.id === id);
+    // tasks.splice(index, 1);
+    // // Third way
+    // tasks = tasks.filter(function (task){
+    //     if (tasks.id === id){
+    //        return false;
+    //     } else{
+    //        return true;
+    //     };
+    // });
+
+    tasks = tasks.filter((task) => task.id !== id);
+
+    saveToLocalStorage();
+
+    //delete task from markup
+    parentNode.remove();
+
+    // //if list is empty - show "task list is empty"
+    // if(taskList.children.length === 1){
+    // emptyList.classList.remove('none');
+    // };
+    checkEmptyList();
+
+
+};
+
+function doneTask(event){
+    //if click was not by button "done"
+    if (event.target.dataset.action !== 'done') return;
+
+    const parentNode = event.target.closest('.list-group-item');
+
+    //defind task ID
+    const id = Number(parentNode.id);
+    // //First way
+    // const task = tasks.find(function(task){
+    //     if (task.id === id){
+    //         return true;
+    //     };
+    // });
+    // task.done = !task.done;
+    // Second way
+    const task = tasks.find((task) => task.id === id);
+    task.done = !task.done
+
+    saveToLocalStorage();
+    
+    const taskTitle = parentNode.querySelector('.task-title');
+    taskTitle.classList.toggle('task-title--done');
+};
+
+function checkEmptyList(){
+    if (tasks.length === 0){
+        const emptyListHTML = `<li id="emptyList" class="list-group-item empty-list">
+        <img src="./img/leaf.svg" alt="Empty" width="48" class="mt-3">
+        <div class="empty-list__title">Task list is empty</div>
+        </li>`;
+
+        tasksList.insertAdjacentHTML('afterbegin', emptyListHTML)
+    };
+
+    if (tasks.length > 0){
+        const emptyListEl = document.querySelector('#emptyList');
+        emptyListEl ? emptyListEl.remove() : null;
+    };
+};
+
+function saveToLocalStorage(){
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+};
+
+function renderTask(task){
+    //make CSS class
+    const cssClass = task.done ? "task-title task-title--done" : "task-title";
+    
+    //!create markup for new task
+    const taskHTML = `
+        <li id="${task.id}" class="list-group-item d-flex justify-content-between task-item">
+        <span class="${cssClass}">${task.text}</span>
+        <div class="task-item__buttons">
+        <button type="button" data-action="done" class="btn-action">
+        <img src="./img/tick.svg" alt="Done" width="18" height="18">
+        </button>
+        <button type="button" data-action="delete" class="btn-action">
+        <img src="./img/cross.svg" alt="Done" width="18" height="18">
+        </button>
+        </div>
+        </li>`;
+    
+    //add task on page
+    taskList.insertAdjacentHTML('beforeend', taskHTML);    
+};
