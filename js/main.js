@@ -57,11 +57,11 @@ function addTask(event){
     const newTask = {
         id: Date.now(),
         text: taskText,
-        hour: hoursText,
-        minute: minutesText,
-        day: dayText,
-        year: yearText,
-        month: monthText,
+        hour: Number(hoursText),
+        minute: Number(minutesText),
+        day: Number(dayText),
+        year: Number(yearText),
+        month: Number(monthText),
         done: false
     };
 
@@ -92,37 +92,13 @@ function addTask(event){
 function sortTask(event){
     if (event.target.dataset.action !== 'sortList') return;
 
-    
     tasks.sort((a, b) => {
-        // Сначала сравниваем годы
-        let yearComparison = a.year.localeCompare(b.year);
-        if (yearComparison !== 0) {
-            return yearComparison;
-        }
-    
-        // Затем месяцы
-        let monthComparison = a.month.localeCompare(b.month);
-        if (monthComparison !== 0) {
-            return monthComparison;
-        }
-    
-        // Затем дни
-        let dayComparison = a.day.localeCompare(b.day);
-        if (dayComparison !== 0) {
-            return dayComparison;
-        }
-    
-        // Затем часы
-        let hourComparison = a.hour.localeCompare(b.hour);
-        if (hourComparison !== 0) {
-            return hourComparison;
-        }
-    
-        // И, наконец, минуты
-        return a.minute.localeCompare(b.minute);
+        if (a.year !== b.year) {
+            return a.year - b.year;
+        }else if (a.month !== b.month){
+            return a.month - b.month
+        }else if (a.)
     });
-    
-    
 };
 
 function deleteTask(event){
