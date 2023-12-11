@@ -95,3 +95,9 @@ body {
   justify-content: center;
   text-align: center;
 }
+
+#numbers{
+  display: flex;
+
+}
+

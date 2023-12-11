@@ -1,4 +1,3 @@
-
 //find elements on page
 const form = document.querySelector('#form');
 const input = document.querySelector('#taskInput');
@@ -7,19 +6,21 @@ const emptyList = document.querySelector('#emptyList');
 
 let tasks = [];
 
+
 if (localStorage.getItem('tasks')){
     tasks = JSON.parse(localStorage.getItem('tasks'));
-    tasks.forEach((task) => renderTask(tasks));
+    //tasks.forEach((task) => renderTask(tasks));
 };
 
-// tasks.forEach(function (task){
-//     renderTask(task);
-// });
-
-
+tasks.forEach(function (task){
+    renderTask(task);
+});
 
 
 checkEmptyList();
+
+//sort task
+taskList.addEventListener('click', sortTask);
 
 //add task
 form.addEventListener('submit', addTask);
@@ -36,20 +37,31 @@ function addTask(event){
 
     //take task text from text field
     const taskText = taskInput.value;
+    const dayText = dayInput.value;
+    const monthText = monthInput.value;
+    const minutesText = minutesInput.value;
+    const hoursText = hoursInput.value;
+    const yearText = yearInput.value;
+    
         
-    const currentDate = new Date();
+    //const currentDate = new Date();
 
-    const day = currentDate.getDate();
-    const month = currentDate.getMonth() + 1;
-    const hours = currentDate.getHours();
-    const minutes = currentDate.getMinutes();
-    const year = currentDate.getFullYear();
+    // const day = currentDate.getDate();
+    // const month = currentDate.getMonth() + 1;
+    // const hours = currentDate.getHours();
+    // const minutes = currentDate.getMinutes();
+    //const years = currentDate.getFullYear();
  
-    const id = `${day}.${month}.${year} ${hours}:${minutes}`;
+    // const id = `${day}.${month}.${year} ${hours}:${minutes}`;
     //describe task like object
     const newTask = {
         id: Date.now(),
         text: taskText,
+        hour: hoursText,
+        minute: minutesText,
+        day: dayText,
+        year: yearText,
+        month: monthText,
         done: false
     };
 
@@ -62,6 +74,11 @@ function addTask(event){
 
     //clear text field and save focus
     taskInput.value = "";
+    dayInput.value = "";
+    monthInput.value = "";
+    minutesInput.value = "";
+    hoursInput.value = "";
+    yearInput.value = "";
     taskInput.focus();
 
     // //if in list more then 1 element, "task list is empty" will be hide
@@ -71,6 +88,42 @@ function addTask(event){
     checkEmptyList();
     
 }; 
+
+function sortTask(event){
+    if (event.target.dataset.action !== 'sortList') return;
+
+    
+    tasks.sort((a, b) => {
+        // Сначала сравниваем годы
+        let yearComparison = a.year.localeCompare(b.year);
+        if (yearComparison !== 0) {
+            return yearComparison;
+        }
+    
+        // Затем месяцы
+        let monthComparison = a.month.localeCompare(b.month);
+        if (monthComparison !== 0) {
+            return monthComparison;
+        }
+    
+        // Затем дни
+        let dayComparison = a.day.localeCompare(b.day);
+        if (dayComparison !== 0) {
+            return dayComparison;
+        }
+    
+        // Затем часы
+        let hourComparison = a.hour.localeCompare(b.hour);
+        if (hourComparison !== 0) {
+            return hourComparison;
+        }
+    
+        // И, наконец, минуты
+        return a.minute.localeCompare(b.minute);
+    });
+    
+    
+};
 
 function deleteTask(event){
     //if click was not by button "delete"
@@ -160,6 +213,7 @@ function saveToLocalStorage(){
     localStorage.setItem('tasks', JSON.stringify(tasks));
 };
 
+
 function renderTask(task){
     //make CSS class
     const cssClass = task.done ? "task-title task-title--done" : "task-title";
@@ -167,7 +221,7 @@ function renderTask(task){
     //!create markup for new task
     const taskHTML = `
         <li id="${task.id}" class="list-group-item d-flex justify-content-between task-item">
-        <span class="${cssClass}">${task.text}</span>
+        <span class="${cssClass}"><strong>${task.hour}:${task.minute}</strong> ${task.text}<br><strong>${task.day}.${task.month}.${task.year}</strong></span>
         <div class="task-item__buttons">
         <button type="button" data-action="done" class="btn-action">
         <img src="./img/tick.svg" alt="Done" width="18" height="18">
@@ -179,5 +233,7 @@ function renderTask(task){
         </li>`;
     
     //add task on page
-    taskList.insertAdjacentHTML('beforeend', taskHTML);    
+    taskList.insertAdjacentHTML('beforeend', taskHTML);
+    
 };
+
