@@ -4,6 +4,7 @@ const input = document.querySelector('#taskInput');
 const taskList = document.querySelector('#tasksList');
 const emptyList = document.querySelector('#emptyList');
 
+
 let tasks = [];
 
 
@@ -20,7 +21,7 @@ tasks.forEach(function (task){
 checkEmptyList();
 
 //sort task
-taskList.addEventListener('click', sortTask);
+// taskList.addEventListener('click', sortTask);
 
 //add task
 form.addEventListener('submit', addTask);
@@ -33,7 +34,7 @@ taskList.addEventListener('click', doneTask);
 
 function addTask(event){
     //prevent page reload
-    event.preventDefault();
+    //event.preventDefault();
 
     //take task text from text field
     const taskText = taskInput.value;
@@ -89,17 +90,24 @@ function addTask(event){
     
 }; 
 
-function sortTask(event){
-    if (event.target.dataset.action !== 'sortList') return;
+// function sortTask(event){
+//     if (event.target.dataset.action !== 'sortList') return;
 
-    tasks.sort((a, b) => {
-        if (a.year !== b.year) {
-            return a.year - b.year;
-        }else if (a.month !== b.month){
-            return a.month - b.month
-        }else if (a.)
-    });
-};
+//     tasks.sort((a, b) => {
+//         if (a.year !== b.year) {
+//             return a.year - b.year;
+//         }else if (a.month !== b.month){
+//             return a.month - b.month;
+//         }else if (a.day !== b.day){
+//             return a.day - b.day;
+//         }else if (a.hour !== b.hour){
+//             return a.hour - b.hour
+//         }else if (a.minute !== b.minute){
+//             return a.minute - b.minute
+//         }
+//     });
+//     saveToLocalStorage();
+// };
 
 function deleteTask(event){
     //if click was not by button "delete"
@@ -191,6 +199,21 @@ function saveToLocalStorage(){
 
 
 function renderTask(task){
+    tasks.sort((a, b) => {
+        if (a.year !== b.year) {
+            return a.year - b.year;
+        }else if (a.month !== b.month){
+            return a.month - b.month;
+        }else if (a.day !== b.day){
+            return a.day - b.day;
+        }else if (a.hour !== b.hour){
+            return a.hour - b.hour
+        }else if (a.minute !== b.minute){
+            return a.minute - b.minute
+        }
+    });
+    saveToLocalStorage();
+
     //make CSS class
     const cssClass = task.done ? "task-title task-title--done" : "task-title";
     
@@ -209,7 +232,7 @@ function renderTask(task){
         </li>`;
     
     //add task on page
-    taskList.insertAdjacentHTML('beforeend', taskHTML);
+    taskList.innerHTML += taskHTML;
     
 };
 
