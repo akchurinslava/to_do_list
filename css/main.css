@@ -102,5 +102,31 @@ body {
 }
 
 
+#popup {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fefefe;
+  padding: 20px;
+  border: 1px solid #ccc;
+  z-index: 1;
+}
+
+
+#openPopup {
+  display: flex;
+  margin-bottom: -38px;
+  margin-left: 660px;
+  padding: 7px 25px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+
 
 

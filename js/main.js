@@ -3,6 +3,24 @@ const form = document.querySelector('#form');
 const input = document.querySelector('#taskInput');
 const taskList = document.querySelector('#tasksList');
 const emptyList = document.querySelector('#emptyList');
+const removeAllButton = document.getElementById('removeDoneTasks');
+
+document.addEventListener('DOMContentLoaded', function () {
+    const openButton = document.getElementById('openPopup');
+    const popup = document.getElementById('popup');
+    const closeButton = document.getElementById('closePopup');
+
+    
+    openButton.addEventListener('click', function () {
+        
+        popup.style.display = 'block';
+        
+    });
+
+    closeButton.addEventListener('click', function () {
+        popup.style.display = 'none';
+    });
+});
 
 
 let tasks = [];
@@ -13,6 +31,7 @@ if (localStorage.getItem('tasks')){
     //tasks.forEach((task) => renderTask(tasks));
 };
 
+
 tasks.forEach(function (task){
     renderTask(task);
 });
@@ -20,17 +39,26 @@ tasks.forEach(function (task){
 
 checkEmptyList();
 
+
 //sort task
 // taskList.addEventListener('click', sortTask);
+
+
+//remove all done tasks
+removeAllButton.addEventListener('click', removeAllDoneTasks);
+
 
 //add task
 form.addEventListener('submit', addTask);
 
+
 //delete task
 taskList.addEventListener('click', deleteTask);
 
+
 //done task
 taskList.addEventListener('click', doneTask);
+
 
 function addTask(event){
     //prevent page reload
@@ -90,6 +118,7 @@ function addTask(event){
     
 }; 
 
+
 // function sortTask(event){
 //     if (event.target.dataset.action !== 'sortList') return;
 
@@ -108,6 +137,7 @@ function addTask(event){
 //     });
 //     saveToLocalStorage();
 // };
+
 
 function deleteTask(event){
     //if click was not by button "delete"
@@ -152,6 +182,29 @@ function deleteTask(event){
 
 };
 
+
+function removeAllDoneTasks(event){
+    tasks = tasks.filter(function(obj) {
+        return obj.done !== true;
+      });
+    tasks.sort((a, b) => {
+        if (a.year !== b.year) {
+            return a.year - b.year;
+        }else if (a.month !== b.month){
+            return a.month - b.month;
+        }else if (a.day !== b.day){
+            return a.day - b.day;
+        }else if (a.hour !== b.hour){
+            return a.hour - b.hour
+        }else if (a.minute !== b.minute){
+            return a.minute - b.minute
+        }
+    });
+    saveToLocalStorage();
+    location.reload();    
+};
+
+
 function doneTask(event){
     //if click was not by button "done"
     if (event.target.dataset.action !== 'done') return;
@@ -177,6 +230,7 @@ function doneTask(event){
     taskTitle.classList.toggle('task-title--done');
 };
 
+
 function checkEmptyList(){
     if (tasks.length === 0){
         const emptyListHTML = `<li id="emptyList" class="list-group-item empty-list">
@@ -192,6 +246,7 @@ function checkEmptyList(){
         emptyListEl ? emptyListEl.remove() : null;
     };
 };
+
 
 function saveToLocalStorage(){
     localStorage.setItem('tasks', JSON.stringify(tasks));
@@ -235,4 +290,5 @@ function renderTask(task){
     taskList.innerHTML += taskHTML;
     
 };
+
 

@@ -43,30 +43,33 @@
 		<!-- //List of tasks -->
 
 		<!-- Form -->
-		<div class="card bg-light" >
+		
+		<div class="card bg-light">
 			<div class="card-header" style="background-color: white;">ADD NEW TASK:</div>
-			<div class="card-body" style="background-color: white;">
+			<div class="card-body" style="background-color: white;" ><button id="openPopup">SEND MAIL</button>
 				<form id="form">
 					<div id="numbers">
-					<input type="number" class="form-control" id="hoursInput" placeholder="Hours:" required style="width: 102px;" min="00" max="23">
-					<input type="number" class="form-control" id="minutesInput" placeholder="Minutes:" required style="width: 102px;" min="00" max="59">
-					<input type="number" class="form-control" id="dayInput" placeholder="Day:" required style="width: 102px;" min="1" max="31">
-					<input type="number" class="form-control" id="monthInput" placeholder="Month:" required style="width: 102px;" min="1" max="12">
-					<input type="number" class="form-control" id="yearInput" placeholder="Year:" required style="width: 102px;" min="2023">
-					<button id="removeDoneTasks" class="btn btn-primary btn-lg active" style="  border: none;
-					width: 150px;
-					outline: none;
-					width: auto;
-					
-					background: #f30212;
-					color: #fff;
-					font-size: 15px;
-					cursor: pointer;">REMOVE ALL</button>
+					<input type="number" class="form-control" id="hoursInput" placeholder="Hours:" required style="width: 102px; margin-right: 5px;" min="00" max="23">
+					<input type="number" class="form-control" id="minutesInput" placeholder="Minutes:" required style="width: 102px; margin-right: 5px;" min="00" max="59">
+					<input type="number" class="form-control" id="dayInput" placeholder="Day:" required style="width: 102px; margin-right: 5px;" min="1" max="31">
+					<input type="number" class="form-control" id="monthInput" placeholder="Month:" required style="width: 102px; margin-right: 5px;" min="1" max="12">
+					<input type="number" class="form-control" id="yearInput" placeholder="Year:" required style="width: 102px; margin-right: 5px;" min="2023">
+					<div style="display: flex;"><button id="removeDoneTasks" class="btn btn-primary btn-lg active" style="border: none;
+						width: 150px;
+						outline: none;
+						width: auto;
+						
+						background: #f30212;
+						color: #fff;
+						font-size: 15px;
+						cursor: pointer;">REMOVE ALL</button>
+						</div>
+						
 					</div>
 					<br>
 					<div class="form-group" style="display: flex; align-items: center; justify-content: space-between; background: #edeef0; border-radius: 30px; padding-left: 20px; margin-bottom: 25px;">
 
-						<input type="text" class="form-control" id="taskInput" placeholder="Task text" required style="  flex: 1;
+						<input type="text" class="form-control" id="taskInput" placeholder="Enter task text" required style="  flex: 1;
 						border: none;
 						outline: none;
 						background: transparent;
@@ -89,10 +92,31 @@
 					<button id="removeDoneTasks" class="btn btn-secondary mt-4 float-right" style="width: 100%;">Delete finished tasks</button> -->
 					</div>
 				</form>
+				
 			</div>
 		</div>
 		<!-- Form  -->
+		
 
+<!-- Всплывающее окно -->
+<div id="popup">
+	<input type="text" class="form-control" id="" placeholder="Enter mail" required style="  flex: 1;
+	
+	outline: none;
+	background: transparent;
+	padding: 10px;
+	font-weight: 14px;">
+    <button id="closePopup" class="btn btn-primary btn-lg active" style="border: none;
+	width: 150px;
+	outline: none;
+	width: auto;
+	margin-top: 10px;
+	margin-left: 130px;
+	background: #f30212;
+	color: #fff;
+	font-size: 15px;
+	cursor: pointer;">Close</button>
+</div>
 	</div>
 	<script src="js/main.js"></script>
 </body>
