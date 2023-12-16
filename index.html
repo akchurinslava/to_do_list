@@ -3,6 +3,8 @@
 <head>
 	<meta charset="UTF-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"/>
 	<link rel="stylesheet" href="css/main.css"/>
 	<title>To Do List</title>
@@ -47,7 +49,7 @@
 		<div class="card bg-light">
 			<div class="card-header" style="background-color: white;">ADD NEW TASK:</div>
 			<div class="card-body" style="background-color: white;" ><button id="openPopup">SEND MAIL</button>
-				<form id="form">
+				<form id="form" class="contact_form">
 					<div id="numbers">
 					<input type="number" class="form-control" id="hoursInput" placeholder="Hours:" required style="width: 102px; margin-right: 5px;" min="00" max="23">
 					<input type="number" class="form-control" id="minutesInput" placeholder="Minutes:" required style="width: 102px; margin-right: 5px;" min="00" max="59">
@@ -106,18 +108,59 @@
 	background: transparent;
 	padding: 10px;
 	font-weight: 14px;">
+		    <button id="sendPopup" class="btn btn-primary btn-lg active" style="border: none;
+			width: 150px;
+			outline: none;
+			width: auto;
+			margin-top: 10px;
+			margin-left: 130px;
+			background: #4CAF50;
+			color: #fff;
+			font-size: 15px;
+			cursor: pointer;">Send</button>
     <button id="closePopup" class="btn btn-primary btn-lg active" style="border: none;
 	width: 150px;
 	outline: none;
 	width: auto;
 	margin-top: 10px;
-	margin-left: 130px;
+	
 	background: #f30212;
 	color: #fff;
 	font-size: 15px;
 	cursor: pointer;">Close</button>
+
 </div>
 	</div>
+	<script src="https://smtpjs.com/v3/smtp.js"></script>
 	<script src="js/main.js"></script>
+	<script>
+		function sendMsg(event){
+			var msgSend = localStorage.getItem("tasks");
+			if (msgSend){
+				var dataArray = JSON.parse(msgSend);
+				if(dataArray.length > 0){
+					var maxID = dataArray.reduce(function(max, obj){
+						return obj.ID > max.ID ? obj : max;
+					});
+				}
+			}
+			var email =  document.querySelector('form-control');
+			var msg = maxID;
+
+			var text_to_send = msg.text
+			Email.send({
+				SecureToken : "XXXX",
+				To : email,
+				From : "XXXX",
+				Subject : "Last To Do List Task",
+				Body : text_to_send
+			}).then(
+  	message => alert(message)
+	
+	);
+	const send_button = document.getElementById('sendPopup');
+	send_button.addEventListener('click', sendMsg);}
+
+	</script>
 </body>
 </html>
